@@ -42,7 +42,7 @@ class PygameGame(object):
         self.height = height
         self.fps = fps
         self.title = title
-        self.bgColor = (0, 0, 0)
+        self.bgColor = (100, 0, 150)
         pygame.init()
 
     def run(self):
