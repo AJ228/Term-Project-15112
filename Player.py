@@ -18,7 +18,6 @@ class Player(GameObject): # The player sprite(s)
 
     def update(self, keysDown, screenWidth, screenHeight):
         self.image = pygame.transform.rotate(self.baseImage, self.angle)
-        self.x += self.vX
 
         if keysDown(pygame.K_SPACE) and self.y == self.startY:
             self.jump()
