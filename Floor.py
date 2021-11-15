@@ -4,7 +4,7 @@ from GameObject import  GameObject
 
 class Floor(GameObject): # The player sprite(s)
     @staticmethod
-    def init(screenWidth, screenHeight): # Loading the player sprite image
+    def init(screenWidth, screenHeight): # Loading the floor sprite image
         Floor.floorImage = pygame.transform.scale(pygame.image.load('Game_Floor.png').convert_alpha(),
             (screenWidth, screenHeight/4))
 

@@ -2,6 +2,8 @@ import pygame
 
 # GameObject will be used for character and obstacle sprites that will appear in the game
 # They operate similarly
+# Class structure inspired from:
+# https://qwewy.gitbooks.io/pygame-module-manual/content/tutorials/using-sprites/making-a-game-with-sprites.html
 
 class GameObject(pygame.sprite.Sprite):
     def __init__(self, x, y, image): # x, y represent center coordinates of sprites
