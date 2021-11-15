@@ -1,12 +1,12 @@
+# This file manages the movement of the player character 
 import pygame
 from GameObject import  GameObject
 
 class Player(GameObject): # The player sprite(s)
     @staticmethod
     def init(): # Loading the player sprite image
-        Player.charImage = pygame.transform.rotate(pygame.transform.scale(
-            pygame.image.load('GeodashChar.png').convert_alpha(),
-            (40, 40)), 0)
+        Player.charImage = pygame.transform.scale(pygame.image.load('GeodashChar.png').convert_alpha(),
+            (40, 40))
 
     def __init__(self, x, y):
         super(Player, self).__init__(x, y, Player.charImage)
