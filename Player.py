@@ -5,7 +5,7 @@ from GameObject import  GameObject
 class Player(GameObject): # The player sprite(s) class is a subclass of GameObject
     @staticmethod # Method considered as a member of the object but is accessible directly from the constructor
     def init(): # Loading the player sprite image
-        Player.charImage = pygame.transform.scale(pygame.image.load('GeodashChar.png').convert_alpha(),
+        Player.charImage = pygame.transform.scale(pygame.image.load('GeodashChar2.png').convert_alpha(),
             (40, 40))
 
     def __init__(self, x, y):
