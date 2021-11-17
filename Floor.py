@@ -5,8 +5,8 @@ from GameObject import  GameObject
 class Floor(GameObject): # The player sprite(s)
     @staticmethod
     def init(screenWidth, screenHeight): # Loading the floor sprite image
-        Floor.floorImage = pygame.transform.scale(pygame.image.load('Game_Floor.png').convert_alpha(),
-            (screenWidth, screenHeight/4))
+        Floor.floorImage = pygame.transform.scale(pygame.image.load('FloorBlock.png').convert_alpha(),
+            (screenWidth, screenHeight/6))
 
     def __init__(self, x, y):
         super(Floor, self).__init__(x, y, Floor.floorImage)
