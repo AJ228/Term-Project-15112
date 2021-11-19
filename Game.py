@@ -20,22 +20,20 @@ class Game(PygameGame):
         self.charGroup = pygame.sprite.Group(Player(self.width/4, 5*(self.height/6)-20))
         # Grouped character sprites together (demo only contains one sprite but still
         # useful for my project when making obstacles)
-        self.obsGroup = [Obstacle(steps3, screen)]
-        self.obsGroupSize = len(self.obsGroup)
+        self.obsGroup = [Obstacle(tower2, screen)]
 
     def timerFired(self, dt, screen): # Works much like graphics timerFired
+        self.blips += 1
         self.wallGroup.update(self.width, self.height)
         self.floorGroup.update(self.width, self.height)
         self.charGroup.update(self.isKeyPressed, self.width, self.height)
         for obs in self.obsGroup:
             obs.update(self.width, self.height)
-            if obs.halfWay == True and self.obsGroupSize == 1:
-                self.obsGroup.append(Obstacle(level3Platform, screen))
-                obs.halfWay = False
-                self.obsGroupSize += 1
-            elif len(obs.obstacle) == 0:
-                del obs
-                self.obsGroupSize -= 1
+            if len(obs.obstacle) == 0: # If current sprite group in list has no sprites left
+                del obs # Delete sprite group from obstacle list
+        if self.blips % 70 == 0: # Add a new obstacle every second (approximated based on frame rate)
+            self.obsGroup.append(Obstacle(spikePit, screen))
+
 
     def redrawAll(self, screen): # Works much like graphics redrawAll
         self.wallGroup.draw(screen)

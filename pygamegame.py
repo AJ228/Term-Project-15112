@@ -43,6 +43,7 @@ class PygameGame(object):
         self.fps = fps
         self.title = title
         self.bgColor = (0, 0, 0)
+        self.blips = 0 # Used to track time-based events
         pygame.init()
 
     def run(self):
