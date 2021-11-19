@@ -8,13 +8,14 @@ class Obstacle():
     def __init__(self, obsData, dispSurface):
         self.displaySurface = dispSurface
         self.createObstacle(obsData) # Makes the obstacle based on the data list it is given
+        self.halfWay = False # Flag to mark creation of next obstacle in main game file
 
     def createObstacle(self, obstacle):
         self.obstacle = pygame.sprite.Group()
         for rowIndex, row in enumerate(obstacle): # Returns the index and sprite image letter stored at that index
             for colIndex, col in enumerate(row): # Enumerate helps me see the exact position of each block in the data list
                 print(f"{rowIndex},{colIndex}:{col}")
-                if col != " " or col != "": #Ensures no block object is made for a blank space
+                if col != " ": #Ensures no block object is made for a blank space
                     if col == "P": # Make a platform
                         if colIndex == 0: # Choose which platform image to use
                             image = "LeftPlatform.png"
@@ -35,15 +36,21 @@ class Obstacle():
                         else:
                             image = "MidPlatBlock.png"
                         image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize))
+                    
+                    elif col == "S":
+                        image = "Spike.png"
+                        image = image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize))
 
                     x = screen_width + (colIndex * blockSize) # Getting x,y coordinates using obstacle list sizes
-                    y = 11*(screen_height/12) - ((len(obstacle) - rowIndex)*(blockSize)) 
+                    y = (5*(screen_height/6)) - ((len(obstacle)-rowIndex)*(blockSize)) 
                     obs = Block(x, y, image)
                     self.obstacle.add(obs)
     
     def update(self, screenWidth, screenHeight):
         for block in self.obstacle:
-            if block.rect.right < 0: # Wrap around in the horizontal direction
+            if block.rect.right < screenWidth/2 and self.halfWay == False:
+                self.halfWay = True # Start making next obstacle
+            if block.rect.right < 0: # Delete sprite once off screen
                 self.obstacle.remove(block)
         self.obstacle.update(screenWidth, screenHeight)
     
