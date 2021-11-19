@@ -16,6 +16,11 @@ class Player(GameObject): # The player sprite(s) class is a subclass of GameObje
         self.jumpHeight = 0
         self.jumped = False
 
+    def applyGravity(self): # Used when player sprite is falling
+        self.y += self.vY
+        self.rect.y += self.vY
+
+
     def update(self, keysDown, screenWidth, screenHeight):
         self.image = pygame.transform.rotate(self.baseImage, self.angle)
 
@@ -29,7 +34,8 @@ class Player(GameObject): # The player sprite(s) class is a subclass of GameObje
                 self.jumped = False
 
         elif self.jumped == False and self.y != self.startY:
-            self.jumpHeight -= self.vY  # Descending after jumping   
+            self.applyGravity()  # Descending while midair
+            self.jumpHeight -= self.vY  
 
         if self.y != self.startY:
             self.angle -= self.turnAngle # Makes the player sprite rotate when mid-air
@@ -44,6 +50,3 @@ class Player(GameObject): # The player sprite(s) class is a subclass of GameObje
     
     def jump(self):
         self.jumped = True
-            
-
-
