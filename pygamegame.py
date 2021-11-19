@@ -56,11 +56,11 @@ class PygameGame(object):
         self._keys = dict()
 
         # call game-specific initialization
-        self.init()
+        self.init(screen)
         playing = True
         while playing:
             time = clock.tick(self.fps)
-            self.timerFired(time)
+            self.timerFired(time, screen)
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.mousePressed(*(event.pos))
