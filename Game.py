@@ -18,9 +18,8 @@ class Game(PygameGame):
         # Allows floor to wrap around
         Player.init() 
         self.charGroup = pygame.sprite.Group(Player(self.width/4, 5*(self.height/6)-20))
-        # Grouped character sprites together (demo only contains one sprite but still
-        # useful for my project when making obstacles)
-        self.obsGroup = [Obstacle(tower2, screen)]
+        # Grouped character sprites together (grouped because there can be multiple players)
+        self.obsGroup = [Obstacle(tower2, screen)] # Testing obstacle spawning
 
     def timerFired(self, dt, screen): # Works much like graphics timerFired
         self.blips += 1
