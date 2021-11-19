@@ -7,8 +7,11 @@ from GameObject import GameObject # Obstacle movement on the path will be simila
 class Block(GameObject):
     def __init__(self, x, y, image):
         super(Block, self).__init__(x, y, image)
+        self.vY = 20 # Obstacles will either fall from the sky or rise from the ground
+        self.placed = False # Flag to tell obstacle block when to stop rising/falling
 
     def update(self, screenWidth, screenHeight):
-        self.x -= self.vX
+        if self.rect.right != 0:
+            self.x -= self.vX
         
-        super(Block, self).update(screenWidth, screenHeight)
+        super(Block, self).updateRect()
