@@ -8,13 +8,12 @@ class Obstacle():
     def __init__(self, obsData, dispSurface):
         self.displaySurface = dispSurface
         self.createObstacle(obsData) # Makes the obstacle based on the data list it is given
-        self.halfWay = False # Flag to mark creation of next obstacle in main game file
 
     def createObstacle(self, obstacle):
         self.obstacle = pygame.sprite.Group()
         for rowIndex, row in enumerate(obstacle): # Returns the index and sprite image letter stored at that index
             for colIndex, col in enumerate(row): # Enumerate helps me see the exact position of each block in the data list
-                print(f"{rowIndex},{colIndex}:{col}")
+                print(f"{rowIndex},{colIndex}:{col}") # Identifies exact position of string being read
                 if col != " ": #Ensures no block object is made for a blank space
                     if col == "P": # Make a platform
                         if colIndex == 0: # Choose which platform image to use
@@ -37,9 +36,24 @@ class Obstacle():
                             image = "MidPlatBlock.png"
                         image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize))
                     
-                    elif col == "S":
+                    elif col == "O": # Making towers and choosing correct tower image
+                        if rowIndex == 0: # Top of tower
+                            image = "TowerTop.png"
+                        else: # Base of tower
+                            image = "TowerBase.png"
+                        image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize))
+
+                    elif col == "4": # Making square-type platforms:
+                        image = "FourBorders.png"
+                        image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize))
+                    
+                    elif col == "S": # Making spikes
                         image = "Spike.png"
-                        image = image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize))
+                        image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize))
+                    
+                    elif col == "T": # Making thorn pits
+                        image = "FlatTPit.png" # Thorn pit has same dimensions as platforms
+                        image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize/2))
 
                     x = screen_width + (colIndex * blockSize) # Getting x,y coordinates using obstacle list sizes
                     y = (5*(screen_height/6)) - ((len(obstacle)-rowIndex)*(blockSize)) 
@@ -48,9 +62,7 @@ class Obstacle():
     
     def update(self, screenWidth, screenHeight):
         for block in self.obstacle:
-            if block.rect.right < screenWidth/2 and self.halfWay == False:
-                self.halfWay = True # Start making next obstacle
-            if block.rect.right < 0: # Delete sprite once off screen
+            if block.rect.right == 0: # Delete sprite once off screen
                 self.obstacle.remove(block)
         self.obstacle.update(screenWidth, screenHeight)
     
