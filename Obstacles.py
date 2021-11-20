@@ -8,69 +8,80 @@ screen_height = 600
 
 # Following obstacles are designed to be hazardous to the player while still traversable
 # Floor-level hazards
-spike = ["S"]
+spike = ("Hazard",["S"])
 
-spikePit = [" PP ",
-            "STTS"]
+spikePit = ("Hazard",[" PP ",
+            "STTS"])
 # The following obstacles are for traversal purposes only
 
 # Stepping platforms
-steps2 = ["  B",
-          " BB"]
+steps2 = ("Steps",["  B",
+          " BB"])
 
-steps3 = ["  B",
+steps3 = ("Steps",["  B",
           " BB",
-          "BBB"]
+          "BBB"])
 
 # Mid-air platforms
 
-platform3 = ["PPPP",
+platform3 = ("Platform",
+            ["PPPP",
              "",
-             ""]
+             ""])
 
-platform4 = ["PPPP",
+platform4 = ("Platform",
+            ["PPPP",
              "",
              "",
-             ""]
+             ""])
 
 # Block-type platforms - will be square-type platforms (used with tower and step obstacles)
 
-blockPlat3 = ["4",
+blockPlat3 = ("Block",
+             ["4",
               "",
-              ""]
+              ""])
 
-blockPlat4 = ["4",
+blockPlat4 = ("Block",
+             ["4",
               "",
               "",
-              ""]
+              ""])
 
-blockPlat5 = ["4",
+blockPlat5 = ("Block",
+             ["4",
               "",
               "",
               "",
-              ""]
+              ""])
 
 # Elevated floor blocks
 
-block2 = ["BBBBBB",
-          "BBBBBB"]
+block2 = ("Blocks",
+         ["BBBBBB",
+          "BBBBBB"])
 
-block4 = ["BBBBBB",
+block4 = ("Blocks",
+         ["BBBBBB",
           "BBBBBB",
-          "BBBBBB"]
+          "BBBBBB"])
 
 # Tower blocks, similar function to steps
 
-tower1 = ["O"]
+tower1 = ("Tower",
+         ["O"])
 
-tower2 = ["O",
-          "O"]
+tower2 = ("Tower",
+         ["O",
+          "O"])
 
-tower3 = ["O",
+tower3 = ("Tower",
+         ["O",
           "O",
-          "O"]
-          
-tower4 = ["O",
+          "O"])
+
+tower4 = ("Tower",
+         ["O",
           "O",
           "O",
-          "O"]
+          "O"])
