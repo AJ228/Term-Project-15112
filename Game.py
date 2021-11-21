@@ -114,7 +114,7 @@ class Game(PygameGame):
 
             elif self.spawningTowers == False:
                 if self.obsGroup[self.last].obLevel == "1":
-                    if self.obsGroup[self.last].obType == "1":
+                    # if self.obsGroup[self.last].obType == "1":
                     obstacle = random.choice([spike, spikePit, steps2, steps3, blockPlat1, blockPlat2, block1, block2, tower1])
 
                 elif self.obsGroup[self.last].obLevel == "2":
