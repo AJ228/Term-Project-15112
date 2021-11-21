@@ -8,28 +8,38 @@ screen_height = 600
 
 # Following obstacles are designed to be hazardous to the player while still traversable
 # Floor-level hazards
-spike = ("Hazard",["S"])
 
-spikePit = ("Hazard",[" PP ",
-            "STTS"])
+spike = ("Hazard1",
+        ["S"]) # Obstacle type identifiers needed to decide which obstacle to spawn
+
+spikePit = ("Hazard2",
+           ["STTS"])
+
 # The following obstacles are for traversal purposes only
 
 # Stepping platforms
-steps2 = ("Steps",["  B",
+
+steps2 = ("Steps2",
+         ["  B",
           " BB"])
 
-steps3 = ("Steps",["  B",
+steps3 = ("Steps3",
+         ["  B",
           " BB",
           "BBB"])
 
 # Mid-air platforms
 
-platform3 = ("Platform",
+platform2 = ("Platform2",
+            ["PPPP",
+             ""])
+
+platform3 = ("Platform3",
             ["PPPP",
              "",
              ""])
 
-platform4 = ("Platform",
+platform4 = ("Platform4",
             ["PPPP",
              "",
              "",
@@ -37,18 +47,25 @@ platform4 = ("Platform",
 
 # Block-type platforms - will be square-type platforms (used with tower and step obstacles)
 
-blockPlat3 = ("Block",
+blockPlat1 = ("Block1",
+             ["4"])
+
+blockPlat2 = ("Block2",
+             ["4",
+              ""])
+
+blockPlat3 = ("Block3",
              ["4",
               "",
               ""])
 
-blockPlat4 = ("Block",
+blockPlat4 = ("Block4",
              ["4",
               "",
               "",
               ""])
 
-blockPlat5 = ("Block",
+blockPlat5 = ("Block5",
              ["4",
               "",
               "",
@@ -57,30 +74,39 @@ blockPlat5 = ("Block",
 
 # Elevated floor blocks
 
-block2 = ("Blocks",
+block1 = ("Blocks1",
+         ["BBBBBB"])
+
+block2 = ("Blocks2",
          ["BBBBBB",
           "BBBBBB"])
 
-block4 = ("Blocks",
+block3 = ("Blocks3",
          ["BBBBBB",
+          "BBBBBB",
+          "BBBBBB"])
+
+block4 = ("Blocks4",
+         ["BBBBBB",
+          "BBBBBB",
           "BBBBBB",
           "BBBBBB"])
 
 # Tower blocks, similar function to steps
 
-tower1 = ("Tower",
+tower1 = ("Tower1",
          ["O"])
 
-tower2 = ("Tower",
+tower2 = ("Tower2",
          ["O",
           "O"])
 
-tower3 = ("Tower",
+tower3 = ("Tower3",
          ["O",
           "O",
           "O"])
 
-tower4 = ("Tower",
+tower4 = ("Tower4",
          ["O",
           "O",
           "O",

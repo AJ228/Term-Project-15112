@@ -6,19 +6,21 @@ from Block import Block
 
 class Obstacle():
     def __init__(self, obsData, dispSurface):
+        self.obType = obsData[0][0:-1] # Identifies the type of obstacle to determine loading next obstacle
+        self.obLevel = obsData[0][-1] # Gets the height level of the obstacle being made
         self.displaySurface = dispSurface
-        self.createObstacle(obsData) # Makes the obstacle based on the data list it is given
+        self.createObstacle(obsData[1]) # Makes the obstacle based on the data list it is given
 
     def createObstacle(self, obstacle):
         self.obstacle = pygame.sprite.Group()
         for rowIndex, row in enumerate(obstacle): # Returns the index and sprite image letter stored at that index
             for colIndex, col in enumerate(row): # Enumerate helps me see the exact position of each block in the data list
-                print(f"{rowIndex},{colIndex}:{col}") # Identifies exact position of string being read
+                #print(f"{rowIndex},{colIndex}:{col}") # Identifies exact position of string being read
                 if col != " ": #Ensures no block object is made for a blank space
                     if col == "P": # Make a platform
-                        if colIndex == 0: # Choose which platform image to use
+                        if colIndex == 0 or "P" not in obstacle[rowIndex][0:colIndex]: # Choose which platform image to use
                             image = "LeftPlatform.png"
-                        elif colIndex == len(row)-1:
+                        elif colIndex == len(row)-1 or "P" not in obstacle[rowIndex][colIndex:]:
                             image = "RightPlatform.png"
                         else:
                             image = "MidPlatform.png"
@@ -44,7 +46,7 @@ class Obstacle():
                         image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize))
 
                     elif col == "4": # Making square-type platforms:
-                        image = "FourBorders.png"
+                        image = "Four_Borders.png"
                         image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize))
                     
                     elif col == "S": # Making spikes
