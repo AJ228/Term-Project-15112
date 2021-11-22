@@ -31,16 +31,16 @@ steps3 = ("Steps3",
 # Mid-air platforms
 
 platform2 = ("Platform2",
-            ["PPPP",
+            ["PPPPP",
              ""])
 
 platform3 = ("Platform3",
-            ["PPPP",
+            ["PPPPP",
              "",
              ""])
 
 platform4 = ("Platform4",
-            ["PPPP",
+            ["PPPPP",
              "",
              "",
              ""])
