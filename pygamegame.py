@@ -1,6 +1,6 @@
 import pygame
 
-# Using the framework provided in the Pygame manual
+# Using the framework provided in the Pygame manual with my own extra attributes
 # https://qwewy.gitbooks.io/pygame-module-manual/content/chapter1/framework.html
 # Created by Lukas Peraza
 
@@ -44,11 +44,15 @@ class PygameGame(object):
         self.title = title
         self.bgColor = (0, 0, 0)
         self.blips = 0 # Used to track time-based events
-        self.towerDelay = 20
-        self.blockDelay = 70
-        self.platformDelay = 50
-        self.levelDelay = 70
+        self.towerDelay = 20 # Spawning timers depending on obstacle generated
+        self.blocksDelay = 70
+        self.blockDelay = 20
+        self.hazardDelay = 50
+        self.stepDelay = 50
+        self.platformDelay = 60
+        self.levelDelay = 60
         self.spawnDelay = self.levelDelay # Setting delays between obstacles spawning, starts at 1 second
+        self.gameOver = False
         pygame.init()
 
     def run(self):
@@ -86,6 +90,8 @@ class PygameGame(object):
                     self.keyReleased(event.key, event.mod)
                 elif event.type == pygame.QUIT:
                     playing = False
+            if self.gameOver == True:
+                playing = False
             screen.fill(self.bgColor)
             self.redrawAll(screen)
             pygame.display.flip()
