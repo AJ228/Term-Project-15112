@@ -53,6 +53,7 @@ class PygameGame(object):
         self.levelDelay = 60
         self.spawnDelay = self.levelDelay # Setting delays between obstacles spawning, starts at 1 second
         self.gameOver = False
+        self.spawnLimit = 4 # Keeps the game from spawning too many obstacles on screen
         pygame.init()
 
     def run(self):
