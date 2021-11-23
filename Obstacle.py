@@ -60,7 +60,7 @@ class Obstacle():
                     x = screen_width + (colIndex * blockSize) # Getting x,y coordinates using obstacle list sizes
                     y = (5*(screen_height/6)) - ((len(obstacle)-rowIndex)*(blockSize)) + (blockSize/2)
                     obs = Block(x, y, image)
-                    self.obstacle.add(obs)
+                    self.obstacle.add(obs) # Makes each component of an obsacle into a sprite and stores that in a group
     
     def update(self, screenWidth, screenHeight):
         for block in self.obstacle:
