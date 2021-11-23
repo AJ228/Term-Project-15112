@@ -40,7 +40,7 @@ class Game(PygameGame):
                 for block in obs.obstacle: # Checks each block sprite for every obstacle object
                     if block.rect.colliderect(player.rect):
                         if player.x + (blockSize/2) == block.x - (blockSize/2):
-                            if player.y + (blockSize/2) >=  block.y - (blockSize/3):
+                            if player.y + (blockSize/2) >=  block.y:
                                 self.gameOver = True # Kills player from any horizontal collision and ends game
                         
                         elif player.startY + (blockSize/2) >= block.rect.top: # Allows vertical collisions with bottom of player
@@ -50,10 +50,10 @@ class Game(PygameGame):
                             player.startY = block.rect.y - (blockSize/2)
                         
                         if player.y - (blockSize/2) == block.rect.bottom: # Not with top of player for overhead obstacles
-                            self.charGroup.remove(player)
+                            self.gameOver = True
 
                     elif player.x - (blockSize/2) >= block.x + (blockSize/2): # Allows player to fall off obstacle
-                        self.gameOver = True
+                        player.obCollision = False
 
             for floor in self.floorGroup: # Managing collisions between player and floor
                 if floor.rect.colliderect(player.rect):
