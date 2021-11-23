@@ -10,7 +10,7 @@ class Player(GameObject): # The player sprite(s) class is a subclass of GameObje
 
     def __init__(self, x, y):
         super(Player, self).__init__(x, y, Player.charImage)
-        self.vY = 9
+        self.vY = 8
         self.angle = 0
         self.startY = self.y # Stores height the character is at before jumping (currently static y value)
         self.falling = False
@@ -40,7 +40,7 @@ class Player(GameObject): # The player sprite(s) class is a subclass of GameObje
         if self.jumped == True:
             self.jumpHeight += self.vY
 
-            if self.jumpHeight == 90: # There is only one type of jump so change height that way
+            if self.jumpHeight >= 90: # There is only one type of jump so change height that way
                 self.jumped = False  
 
         if self.jumpHeight != 0 and self.jumped == False:
