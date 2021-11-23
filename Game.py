@@ -40,19 +40,22 @@ class Game(PygameGame):
                 for block in obs.obstacle: # Checks each block sprite for every obstacle object
                     if block.rect.colliderect(player.rect):
                         if player.x + (blockSize/2) == block.x - (blockSize/2):
-                            if player.y + (blockSize/2) >=  block.y:
+                            if player.y + (blockSize/2) > block.y - (blockSize/3): # Makes sure player is below top edge
                                 self.gameOver = True # Kills player from any horizontal collision and ends game
                         
                         elif player.startY + (blockSize/2) >= block.rect.top: # Allows vertical collisions with bottom of player
-                            player.obCollision = True
-                            player.floorCollision = False
-                            player.jumpHeight = 0
-                            player.startY = block.rect.y - (blockSize/2)
+                            if obs.obType == "Hazard": # Kill if player lands on a hazard 
+                                self.gameOver = True
+                            else:
+                                player.obCollision = True
+                                player.floorCollision = False
+                                player.jumpHeight = 0
+                                player.startY = block.rect.y - (blockSize/2)
                         
-                        if player.y - (blockSize/2) == block.rect.bottom: # Not with top of player for overhead obstacles
+                        if player.y - (blockSize/2) == block.y + (blockSize/2): # Not with top of player for overhead obstacles
                             self.gameOver = True
 
-                    elif player.x - (blockSize/2) >= block.x + (blockSize/2): # Allows player to fall off obstacle
+                    elif player.x - (blockSize/2) == block.x + (blockSize/2): # Allows player to fall off obstacle
                         player.obCollision = False
 
             for floor in self.floorGroup: # Managing collisions between player and floor
@@ -76,7 +79,7 @@ class Game(PygameGame):
             self.spawnDelay = self.blocksDelay
             
         elif self.obsGroup[self.last].obType == "Hazard":
-            self.spawnDelay = self.hazardDelay    
+            self.spawnDelay = self.hazardDelay   
 
         elif self.obsGroup[self.last].obType == "Steps":
             self.spawnDelay = self.stepDelay
@@ -90,21 +93,21 @@ class Game(PygameGame):
         else:
             self.spawnDelay = self.levelDelay
 
-        if self.blips % self.spawnDelay == 0: # Add a new obstacle based on spawnDelay
-
-            print(self.obsGroup[self.last].obType,self.obsGroup[self.last].obLevel, self.spawnDelay)
+        if self.blips % self.spawnDelay == 0 and len(self.obsGroup) <= self.spawnLimit: # Add a new obstacle based on spawnDelay
             
             # Choose obstacles from specific sets based on latest obstacle level and type
 
             if self.obsGroup[self.last].obLevel == "1": 
                 if self.spawnDelay == self.blockDelay:
-                    obstacle = random.choice([spike, blockPlat1, blockPlat2, block1, block2, tower1, tower2])
+                    obstacle = random.choice([blockPlat1, blockPlat2, block1, block2, tower1, tower2])
                 elif self.spawnDelay == self.hazardDelay:
-                    obstacle = random.choice([spike, blockPlat1, blockPlat2, block1, block2, tower1])
+                    obstacle = random.choice([spike, blockPlat1, block1, tower1])
                 elif self.spawnDelay == self.blocksDelay:
                     obstacle = random.choice([block1, block2, platform2])
                 elif self.spawnDelay == self.towerDelay:
-                    obstacle = random.choice([tower1, tower2, blockPlat2, block2, platform2]) 
+                    obstacle = random.choice([tower1, tower2, blockPlat2, block2, platform2])
+                elif self.spawnDelay == self.levelDelay: # The obstacle would have been long gone in this case so...
+                    obstacle = random.choice([tower1, blockPlat1, block1, spike]) # Spawn a floor-level obstacle
                     
             elif self.obsGroup[self.last].obLevel == "2":
                 if self.spawnDelay == self.blockDelay:
@@ -117,7 +120,9 @@ class Game(PygameGame):
                 elif self.spawnDelay == self.towerDelay:
                     obstacle = random.choice([tower1, tower2, tower3, blockPlat2, blockPlat3, block2, block3]) 
                 elif self.spawnDelay == self.stepDelay:
-                    obstacle = random.choice([platform2, platform3, blockPlat2, blockPlat3, block2, block3]) 
+                    obstacle = random.choice([platform2, platform3, blockPlat2, blockPlat3, block2, block3])
+                elif self.spawnDelay == self.levelDelay: # The obstacle would have been long gone in this case so...
+                    obstacle = random.choice([tower1, blockPlat1, block1, spike]) # Spawn a floor-level obstacle 
 
             elif self.obsGroup[self.last].obLevel == "3":
                 if self.spawnDelay == self.blockDelay:
@@ -133,6 +138,8 @@ class Game(PygameGame):
                         block3, block4]) 
                 elif self.spawnDelay == self.stepDelay:
                     obstacle = random.choice([platform3, platform4, blockPlat3, blockPlat4, block2, block3, block4])
+                elif self.spawnDelay == self.levelDelay: # The obstacle would have been long gone in this case so...
+                    obstacle = random.choice([tower1, blockPlat1, block1, spike]) # Spawn a floor-level obstacle
 
             elif self.obsGroup[self.last].obLevel == "4":
                 if self.spawnDelay == self.blockDelay:
@@ -146,14 +153,15 @@ class Game(PygameGame):
                 elif self.spawnDelay == self.towerDelay:
                     obstacle = random.choice([tower3, tower4, blockPlat3, blockPlat4, blockPlat5, block2, block3, \
                         block4]) 
+                elif self.spawnDelay == self.levelDelay: # The obstacle would have been long gone in this case so...
+                    obstacle = random.choice([tower1, blockPlat1, block1, spike]) # Spawn a floor-level obstacle
 
             elif self.obsGroup[self.last].obLevel == "5": # Only one type of level 5 obstacle so no need to split
                 obstacle = random.choice([tower4, blockPlat3, blockPlat4, blockPlat5, block3, block4, platform3,\
                      platform4])
 
             else: # For level 0 (floor-level) obstacles
-                obstacle = random.choice([spike, steps2, steps3, blockPlat1, blockPlat2, block1, block2, tower1,\
-                     tower2]) 
+                obstacle = random.choice([spike, steps2, steps3, blockPlat1, block1, tower1]) 
 
             self.obsGroup.append(Obstacle(obstacle, screen))
             self.last += 1
