@@ -3,7 +3,7 @@
 import pygame
 
 blockSize = 40
-screen_width = 600
+screen_width = 800
 screen_height = 600
 
 # Following obstacles are designed to be hazardous to the player while still traversable
