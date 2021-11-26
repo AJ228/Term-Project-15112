@@ -62,7 +62,7 @@ class Obstacle():
                     # Getting x,y coordinates using obstacle list sizes
 
                     if player == 1: # Player 1 in multiplayer mode
-                        x = screen_width/2 + (colIndex * blockSize) # Make at the middle of the screen
+                        x = screen_width/2 + (colIndex * blockSize) - blockSize # Make at the middle of the screen
 
                     elif player == 2 or player == 3: # Player 2 in multiplayer mode or Player 1 in single player mode
                         x = screen_width + (colIndex * blockSize) # Make at the end of the screen
@@ -71,6 +71,8 @@ class Obstacle():
                     # Y position not affected by player designation or game mode 
 
                     obs = Block(x, y, image)
+
+                    # Remember the last (top-right) block in an obstacle
                     if rowIndex == 0 and (colIndex == len(row)-1 or " " in obstacle[rowIndex][colIndex:]):
                         self.lastBlock = obs
 
@@ -80,7 +82,7 @@ class Obstacle():
         for block in self.obstacle:
             if player == 1 or player == 3: 
                 # Always removes obstacle once it reaches the end of the screen for player 1
-                if block.rect.right == 0: # Delete sprite once off screen
+                if block.x - (blockSize/2) == 0: # Delete sprite once off screen
                     self.obstacle.remove(block)
 
             elif player == 2:
