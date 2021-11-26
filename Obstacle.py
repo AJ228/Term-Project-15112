@@ -5,14 +5,16 @@ from Obstacles import *
 from Block import Block
 
 class Obstacle():
-    def __init__(self, obsData, dispSurface):
+    def __init__(self, obsData, dispSurface, player):
         self.obType = obsData[0][0:-1] # Identifies the type of obstacle to determine loading next obstacle
         self.obLevel = obsData[0][-1] # Gets the height level of the obstacle being made
         self.displaySurface = dispSurface
+        self.player2 = player # Used to decide where to spawn the blocks depending on the player if in multiplayer mode
+        self.lastBlock = None # Will hold the last sprite of the top row of every obstacle for collision management
         self.obstacle = pygame.sprite.Group()
-        self.createObstacle(obsData[1]) # Makes the obstacle based on the data list it is given
+        self.createObstacle(obsData[1], player) # Makes the obstacle based on the data list it is given
 
-    def createObstacle(self, obstacle):
+    def createObstacle(self, obstacle, player):
         for rowIndex, row in enumerate(obstacle): # Returns the index and sprite image letter stored at that index
             for colIndex, col in enumerate(row): # Enumerate helps me see the exact position of each block in the data list
                 #print(f"{rowIndex},{colIndex}:{col}") # Identifies exact position of string being read
@@ -57,15 +59,34 @@ class Obstacle():
                         image = "FlatTPit.png" # Thorn pit has same dimensions as platforms
                         image =  pygame.transform.scale(pygame.image.load(image).convert_alpha(),(blockSize,blockSize/2))
 
-                    x = screen_width + (colIndex * blockSize) # Getting x,y coordinates using obstacle list sizes
+                    # Getting x,y coordinates using obstacle list sizes
+
+                    if player == 1: # Player 1 in multiplayer mode
+                        x = screen_width/2 + (colIndex * blockSize) # Make at the middle of the screen
+
+                    elif player == 2 or player == 3: # Player 2 in multiplayer mode or Player 1 in single player mode
+                        x = screen_width + (colIndex * blockSize) # Make at the end of the screen
+
                     y = (5*(screen_height/6)) - ((len(obstacle)-rowIndex)*(blockSize)) + (blockSize/2)
+                    # Y position not affected by player designation or game mode 
+
                     obs = Block(x, y, image)
+                    if rowIndex == 0 and (colIndex == len(row)-1 or " " in obstacle[rowIndex][colIndex:]):
+                        self.lastBlock = obs
+
                     self.obstacle.add(obs) # Makes each component of an obsacle into a sprite and stores that in a group
     
-    def update(self, screenWidth, screenHeight):
+    def update(self, screenWidth, screenHeight, player):
         for block in self.obstacle:
-            if block.rect.right == 0: # Delete sprite once off screen
-                self.obstacle.remove(block)
+            if player == 1 or player == 3: 
+                # Always removes obstacle once it reaches the end of the screen for player 1
+                if block.rect.right == 0: # Delete sprite once off screen
+                    self.obstacle.remove(block)
+
+            elif player == 2:
+                if block.x - (blockSize/2) == screenWidth/2: # Once the left of the block hits the middle of the screen
+                    # Remove the block to keep obstacles from overlapping to player 1's side
+                    self.obstacle.remove(block) 
         self.obstacle.update(screenWidth, screenHeight)
     
     def run(self):
