@@ -27,7 +27,7 @@ class Game(PygameGame):
         self.obsGroup = [] # For obstacle spawning
         self.last = 0
 
-        obstacle = random.choice([spike, steps2, steps3, tower1, blockPlat1]) # Start round with an obstacle
+        obstacle = random.choice([steps2, steps3, tower1, blockPlat1]) # Start round with an obstacle
 
         # Make according changes to game on start-up based on mode (single player or multiplayer)
 
@@ -74,11 +74,13 @@ class Game(PygameGame):
                             player.obCollision = False
 
             obs.update(self.width, self.height, mode)
-            if len(obs.obstacle) == 0: # If current sprite group (obstacle object) in list has no sprites left
+
+            if len(obs.obstacle) == 0 and (obs.drawCheck == None or obs.drawCheck == True): # If current sprite group (obstacle object) in list has no sprites left
                 obsGroup.remove(obs) # Delete sprite group from obstacle list
             
             if len(obsGroup) > 1:
                 self.last = -1 # Makes sure there will be no indexing issues and group sizes remain consistent
+
 
     def timerFired(self, dt, screen): # Works much like graphics timerFired
         self.blips += 1
@@ -106,7 +108,7 @@ class Game(PygameGame):
 
             self.manageCollisions(player,obsGroup,mode)
 
-            if self.blips % 30 == 0 and player.killed == False: # Increase player score every half second they survive for
+            if self.blips % 30 == 0 and player.killed == False: # Increase player score every half second they survive
                 player.score += 5
 
             for floor in self.floorGroup: # Managing collisions between player and floor
@@ -219,7 +221,7 @@ class Game(PygameGame):
                      platform4])
 
             else: # For level 0 (floor-level) obstacles
-                obstacle = random.choice([spike, steps2, steps3, blockPlat1, block1, tower1]) 
+                obstacle = random.choice([steps2, steps3, blockPlat1, block1, tower1]) 
 
             if self.multiplayer == True: # Add obstacles based on game mode and player
                 self.obsGroup.append(Obstacle(obstacle, screen, 1))
@@ -259,7 +261,8 @@ class Game(PygameGame):
                     obs.run()
 
                 # Draw the line for split screen in multiplayer mode
-                pygame.draw.line(screen,(255,255,255),(self.width/2, 0),(self.width/2, 5*(self.height/6)), width=5)
+                pygame.draw.line(screen,(255,255,255),(self.width/2 - (blockSize/2), 0),\
+                    (self.width/2 - (blockSize/2), 5*(self.height/6)), width=5)
 
             else:
                 score1 = font.render(f"Player 1: {player.score}",True,(255,255,255))
@@ -267,4 +270,4 @@ class Game(PygameGame):
             
             
         
-Game(800, 600).run()
+Game(820, 600).run()
