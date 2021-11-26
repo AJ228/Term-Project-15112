@@ -101,7 +101,7 @@ class Obstacle():
 
             if player == 1 or player == 3: 
                 # Always removes obstacle once it reaches the end of the screen for player 1
-                if block.x - (blockSize/2) == 0: # Delete sprite once off screen
+                if block.rect.left == 0: # Delete sprite once off screen
                     self.obstacle.remove(block)
 
             elif player == 2:

@@ -5,7 +5,7 @@ from GameObject import  GameObject
 class Wall(GameObject): # The moving wall sprite(s)
     @staticmethod
     def init(screenWidth, screenHeight): # Loading the wall sprite image
-        wallImage = pygame.image.load('Game_BG.png') # For moving background
+        wallImage = pygame.image.load('Game_BG.png').convert_alpha() # For moving background
         background = pygame.transform.scale(wallImage,(screenWidth,screenHeight))
         Wall.wallImage = background
 
