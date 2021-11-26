@@ -8,7 +8,7 @@ class Player(GameObject): # The player sprite(s) class is a subclass of GameObje
         Player.charImage = pygame.transform.scale(pygame.image.load('GeodashChar2.png').convert_alpha(),
             (40, 40))
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, p2):
         super(Player, self).__init__(x, y, Player.charImage)
         self.vY = 8
         self.angle = 0
@@ -19,47 +19,59 @@ class Player(GameObject): # The player sprite(s) class is a subclass of GameObje
         self.jumped = False
         self.floorCollision = False # Flags to check collisions
         self.obCollision = False
+        self.player2 = p2 # Flag for multiplayer identification
+        self.score = 0
+        self.killed = False
 
     def applyGravity(self): # Used when player sprite is falling
         self.startY += self.vY
         self.rect.y += self.vY
 
-
-    def update(self, keysDown, screenWidth, screenHeight):
-        self.image = pygame.transform.rotate(self.baseImage, self.angle)
-
-        if keysDown(pygame.K_SPACE) and self.y == self.startY and self.falling == False: # Allows jumping only when not in mid-air
+    def jump(self):
+        if self.y == self.startY and self.falling == False: # Allows jumping only when not in mid-air
             self.jumped = True
             self.falling = False
             self.floorCollision = False
             self.obCollision = False
 
-        if self.jumped == True or self.falling == True:
-            self.angle -= self.turnAngle # Makes the player sprite rotate when mid-air
 
-        if self.jumped == True:
-            self.jumpHeight += self.vY
+    def update(self, keysDown, screenWidth, screenHeight):
+        if self.killed == False:
+            self.image = pygame.transform.rotate(self.baseImage, self.angle)
 
-            if self.jumpHeight >= 90: # There is only one type of jump so change height that way
-                self.jumped = False  
+            if self.player2 == False and keysDown(pygame.K_SPACE): # SPACE to jump for player 1
+                self.jump()
 
-        if self.jumpHeight != 0 and self.jumped == False:
-            self.jumpHeight -= self.vY 
+            elif self.player2 == True and keysDown(pygame.K_UP): # UP to jump for player 2
+                self.jump()
+                        
 
-        if (self.floorCollision == False and self.obCollision == False) and self.jumped == False:
-            # Makes sure the player falls when not touching the floor or an obstacle
-            self.falling = True
-        else:
-            self.falling = False
+            if self.jumped == True or self.falling == True:
+                self.angle -= self.turnAngle # Makes the player sprite rotate when mid-air
 
-        if self.falling == True:
-            self.applyGravity()  # Descending while midair
+            if self.jumped == True:
+                self.jumpHeight += self.vY
+
+                if self.jumpHeight >= 90: # There is only one type of jump so change height that way
+                    self.jumped = False  
+
+            if self.jumpHeight != 0 and self.jumped == False:
+                self.jumpHeight -= self.vY 
+
+            if (self.floorCollision == False and self.obCollision == False) and self.jumped == False:
+                # Makes sure the player falls when not touching the floor or an obstacle
+                self.falling = True
+            else:
+                self.falling = False
+
+            if self.falling == True:
+                self.applyGravity()  # Descending while midair
 
 
-        if self.y == self.startY and self.angle % 90 != 0:
-            self.angle -= (self.angle % 90) # Makes sure player always lands with a flat surface
+            if self.y == self.startY and self.angle % 90 != 0:
+                self.angle -= (self.angle % 90) # Makes sure player always lands with a flat surface
 
-        self.y = self.startY - self.jumpHeight 
+            self.y = self.startY - self.jumpHeight 
 
-        super(Player, self).update(screenWidth, screenHeight)
+            super(Player, self).update(screenWidth, screenHeight)
     
