@@ -15,4 +15,4 @@ class Block(GameObject):
             self.x -= self.vX
         
         super(Block, self).updateRect() # No wrap around required for these objects
-# Using update messed up how the obstacles were spawning because some blocks wrapped around when they shouldn't
+# Using update messed up how the obstacles were spawning because some blocks wrapped around when they should not
