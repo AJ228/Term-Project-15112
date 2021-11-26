@@ -45,15 +45,16 @@ class PygameGame(object):
         self.bgColor = (0, 0, 0)
         self.blips = 0 # Used to track time-based events
         self.towerDelay = 20 # Spawning timers depending on obstacle generated
-        self.blocksDelay = 70
+        self.blocksDelay = 60
         self.blockDelay = 20
-        self.hazardDelay = 50
-        self.stepDelay = 50
-        self.platformDelay = 60
+        self.hazardDelay = 20
+        self.stepDelay = 40
+        self.platformDelay = 50
         self.levelDelay = 60
         self.spawnDelay = self.levelDelay # Setting delays between obstacles spawning, starts at 1 second
         self.gameOver = False
-        self.spawnLimit = 4 # Keeps the game from spawning too many obstacles on screen
+        self.spawnLimit = 5 # Keeps the game from spawning too many obstacles on screen
+        self.multiplayer = False
         pygame.init()
 
     def run(self):
@@ -72,6 +73,7 @@ class PygameGame(object):
         while playing:
             time = clock.tick(self.fps)
             self.timerFired(time, screen)
+            
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.mousePressed(*(event.pos))
@@ -91,10 +93,14 @@ class PygameGame(object):
                     self.keyReleased(event.key, event.mod)
                 elif event.type == pygame.QUIT:
                     playing = False
+
             if self.gameOver == True:
                 playing = False
+
+            screen.fill(self.bgColor)
             screen.fill(self.bgColor)
             self.redrawAll(screen)
+
             pygame.display.flip()
 
         pygame.quit()
