@@ -9,8 +9,11 @@ class Obstacle():
         self.obType = obsData[0][0:-1] # Identifies the type of obstacle to determine loading next obstacle
         self.obLevel = obsData[0][-1] # Gets the height level of the obstacle being made
         self.displaySurface = dispSurface
-        self.player2 = player # Used to decide where to spawn the blocks depending on the player if in multiplayer mode
+        self.player = player # Used to decide where to spawn the blocks depending on the player if in multiplayer mode
         self.lastBlock = None # Will hold the last sprite of the top row of every obstacle for collision management
+        self.drawCheck = None # For drawing player 1 obstacles in multiplayer mode
+        self.mpObstacle = pygame.sprite.Group() # Used to store player 1 obstacle blocks that have not crossed the \
+        # halfway mark in multiplayer mode
         self.obstacle = pygame.sprite.Group()
         self.createObstacle(obsData[1], player) # Makes the obstacle based on the data list it is given
 
@@ -62,7 +65,8 @@ class Obstacle():
                     # Getting x,y coordinates using obstacle list sizes
 
                     if player == 1: # Player 1 in multiplayer mode
-                        x = screen_width/2 + (colIndex * blockSize) - blockSize # Make at the middle of the screen
+                        self.drawCheck = False # Don't draw the block as soon as it's made
+                        x = screen_width/2 + (colIndex * blockSize) # Make at the middle of the screen
 
                     elif player == 2 or player == 3: # Player 2 in multiplayer mode or Player 1 in single player mode
                         x = screen_width + (colIndex * blockSize) # Make at the end of the screen
@@ -75,20 +79,36 @@ class Obstacle():
                     # Remember the last (top-right) block in an obstacle
                     if rowIndex == 0 and (colIndex == len(row)-1 or " " in obstacle[rowIndex][colIndex:]):
                         self.lastBlock = obs
-
-                    self.obstacle.add(obs) # Makes each component of an obsacle into a sprite and stores that in a group
+                    if player == 1:
+                        self.mpObstacle.add(obs) # Store blocks here for player 1 in multiplayer mode
+                    else:
+                        self.obstacle.add(obs) # Makes each component of an obsacle into a sprite and stores that in a group
     
     def update(self, screenWidth, screenHeight, player):
+        if self.drawCheck == False:
+            for block in self.mpObstacle:
+
+                if block.x + (blockSize/2) < screen_width/2 - (blockSize/2): # When the block is beyond the halfway line
+                    self.obstacle.add(block) # Put the block in self.obstacle
+                    self.mpObstacle.remove(block) # Remove from the other group
+
+            if len(self.mpObstacle) == 0: # If this group is empty
+                self.drawCheck = True # No need to check this group anymore when updating
+            
+            self.mpObstacle.update(screenWidth, screenHeight)
+
         for block in self.obstacle:
+
             if player == 1 or player == 3: 
                 # Always removes obstacle once it reaches the end of the screen for player 1
                 if block.x - (blockSize/2) == 0: # Delete sprite once off screen
                     self.obstacle.remove(block)
 
             elif player == 2:
-                if block.x - (blockSize/2) == screenWidth/2: # Once the left of the block hits the middle of the screen
+                if block.x - (blockSize/2) == screenWidth/2 - (blockSize/2): # Once the left of the block hits the middle of the screen
                     # Remove the block to keep obstacles from overlapping to player 1's side
                     self.obstacle.remove(block) 
+                    
         self.obstacle.update(screenWidth, screenHeight)
     
     def run(self):
