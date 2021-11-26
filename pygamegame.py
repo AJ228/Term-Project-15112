@@ -44,16 +44,15 @@ class PygameGame(object):
         self.title = title
         self.bgColor = (0, 0, 0)
         self.blips = 0 # Used to track time-based events
-        self.towerDelay = 20 # Spawning timers depending on obstacle generated
-        self.blocksDelay = 60
-        self.blockDelay = 20
-        self.hazardDelay = 20
-        self.stepDelay = 40
-        self.platformDelay = 50
-        self.levelDelay = 60
+        self.towerDelay = 21 # Spawning timers depending on obstacle generated
+        self.blocksDelay = 66
+        self.blockDelay = 21
+        self.hazardDelay = 21
+        self.stepDelay = 41
+        self.platformDelay = 56
+        self.levelDelay = 61 # All incremented by 1 to allow blip adjustment in Game.py
         self.spawnDelay = self.levelDelay # Setting delays between obstacles spawning, starts at 1 second
         self.gameOver = False
-        self.spawnLimit = 5 # Keeps the game from spawning too many obstacles on screen
         self.multiplayer = False
         pygame.init()
 
@@ -73,24 +72,30 @@ class PygameGame(object):
         while playing:
             time = clock.tick(self.fps)
             self.timerFired(time, screen)
-            
+
             for event in pygame.event.get():
                 if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     self.mousePressed(*(event.pos))
+
                 elif event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                     self.mouseReleased(*(event.pos))
+
                 elif (event.type == pygame.MOUSEMOTION and
                       event.buttons == (0, 0, 0)):
                     self.mouseMotion(*(event.pos))
+                    
                 elif (event.type == pygame.MOUSEMOTION and
                       event.buttons[0] == 1):
                     self.mouseDrag(*(event.pos))
+
                 elif event.type == pygame.KEYDOWN:
                     self._keys[event.key] = True
                     self.keyPressed(event.key, event.mod)
+
                 elif event.type == pygame.KEYUP:
                     self._keys[event.key] = False
                     self.keyReleased(event.key, event.mod)
+
                 elif event.type == pygame.QUIT:
                     playing = False
 
