@@ -7,3 +7,6 @@ The project only requires you to run the Game.py file to play the game
 
 ## Required libraries
 Pygame is the only required library which is provided in this repository
+
+## Video Demo Link
+https://youtu.be/UTOFI8T5dk0
